@@ -16,8 +16,8 @@ def get_score_common_part(common_part):
 def part1():
     common_part = set()
     mid_string = int(len(line) / 2)
-    bag1 = line[:mid_string]
-    bag2 = line[mid_string:]
+    bag1, bag2 = line[:mid_string], line[mid_string:]
+    # alternative way : common = list(set(bag1).intersection(set(bag2)))
     for letter in bag1:
         if letter in bag2:
             common_part.add(letter)
@@ -25,6 +25,11 @@ def part1():
 
 
 def part2():
+    # Alternative way
+    # for i in range(0, len(input_list.read().splitlines()), 3):
+    #     a, b, c = [set(items) for items in input_data[i:i + 3]]
+    #     common = list(a & b & c)
+
     global elf_number
     score = 0
     elf_number += 1
