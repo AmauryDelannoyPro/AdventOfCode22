@@ -24,6 +24,12 @@ def add_dir(folder_path, folder_name):
     current_element_in_dict = get_current_dir(folder_path)
     current_element_in_dict.update({folder_name: {}})
 
+    # Add new dir for size calculation
+    full_path_dir = "".join(folder_path)+folder_name
+    if full_path_dir == "":
+        full_path_dir = "/"
+    sum_dir_dict.update({full_path_dir: 0})
+
 
 def add_file(folder_path, file_name, file_size):
     """
@@ -35,6 +41,12 @@ def add_file(folder_path, file_name, file_size):
     """
     current_element_in_dict = get_current_dir(folder_path)
     current_element_in_dict.update({file_name: file_size})
+
+    # Add new file in each step folder
+    for i in range(len(folder_path)):
+        last_index = len(folder_path)-i
+        full_path_dir = "".join(folder_path[0:last_index])
+        sum_dir_dict[full_path_dir] += file_size
 
 
 def cd_command(argument):
@@ -70,8 +82,13 @@ def add_element_in_os(terminal_display_line):
         case "dir":
             add_dir(dir_path, element[1])
         case _:
-            add_file(dir_path, element[1], element[0])
+            add_file(dir_path, element[1], int(element[0]))
     pass
+
+
+def calcul_part1():
+    pprint(sum_dir_dict)
+    return sum(v for v in sum_dir_dict.values() if v < SIZE_LIMIT)
 
 
 # Represent our OS
@@ -79,10 +96,15 @@ os_dict = {}
 
 # Current path, equivalent to 'pwd' command
 dir_path = []
+
+# Directory size
+sum_dir_dict = {}
+
 if __name__ == '__main__':
     with open("input", "r") as input_list:
         score1, score2 = 0, 0
         add_dir(dir_path, "/")
+        SIZE_LIMIT = 100000
 
         for line in input_list.read().splitlines():
             # Command input
@@ -98,5 +120,7 @@ if __name__ == '__main__':
                 add_element_in_os(line)
 
         # pprint(os_dict)
-        print(f"Part 1 : {score1}")  #
-        print(f"Part 2 : {score1}")  #
+        score1 = calcul_part1()
+
+        print(f"Part 1 : {score1}")  # 1583951
+        print(f"Part 2 : {score2}")  #
