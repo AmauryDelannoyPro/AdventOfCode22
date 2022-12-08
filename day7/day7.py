@@ -87,8 +87,16 @@ def add_element_in_os(terminal_display_line):
 
 
 def calcul_part1():
-    pprint(sum_dir_dict)
+    SIZE_LIMIT = 100000
     return sum(v for v in sum_dir_dict.values() if v < SIZE_LIMIT)
+
+
+def calcul_part2():
+    TOTAL_SIZE = 70000000
+    NEEDED_SPACE = 30000000
+    unused_part = TOTAL_SIZE - sum_dir_dict["/"]
+    size_missing = NEEDED_SPACE - unused_part
+    return min(v for v in sum_dir_dict.values() if v > size_missing)
 
 
 # Represent our OS
@@ -104,7 +112,6 @@ if __name__ == '__main__':
     with open("input", "r") as input_list:
         score1, score2 = 0, 0
         add_dir(dir_path, "/")
-        SIZE_LIMIT = 100000
 
         for line in input_list.read().splitlines():
             # Command input
@@ -121,6 +128,7 @@ if __name__ == '__main__':
 
         # pprint(os_dict)
         score1 = calcul_part1()
+        score2 = calcul_part2()
 
         print(f"Part 1 : {score1}")  # 1583951
-        print(f"Part 2 : {score2}")  #
+        print(f"Part 2 : {score2}")  # 214171
