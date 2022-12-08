@@ -6,4 +6,4 @@ if __name__ == '__main__':
             pass
 
         print(f"Part 1 : {score1}")  #
-        print(f"Part 2 : {score1}")  #
+        print(f"Part 2 : {score2}")  #
