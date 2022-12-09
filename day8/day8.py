@@ -1,27 +1,38 @@
-def find_vertical_tree(actual_line, actual_col, sens):
-    current_val = table[actual_line][actual_col]
 
-def find_horizontal_tree(actual_line, actual_col, sens):
-    current_val = table[actual_line][actual_col]
+def find_visible_trees_by_subpart(id_line, id_col, line, start_col, end_col):
+    current_val = table[id_line][id_col]
+    current_max = max(line[start_col:end_col])
 
-
-def find_visible_trees(actual_line, actual_col):
-    score = 0
-
-    score += find_vertical_tree(idline, idcol, 1)
-    score += find_vertical_tree(idline, idcol, -1)
-    score += find_horizontal_tree(idline, idcol, 1)
-    score += find_horizontal_tree(idline, idcol, -1)
-    return score
+    if current_val > current_max :
+        visible_trees_dict[(id_line, id_col)] = current_val
 
 
-def calculate_edge_tree():
-    # Pour les arbres en bordures, faire :
-    # ligne + col - 2 pour les coins * 2 pour faire l'autre moitié
-    # (nb_col + nb_lig -2) * 2
-    return (len(table) + len(table[0]) - 2) *2
+def find_visible_trees(idline, idcol):
+    current_line = table[idline]
+    current_col = concat_col_val(idcol)
+    # Horizontal
+    find_visible_trees_by_subpart(idline, idcol, current_line, 0, idcol)
+    find_visible_trees_by_subpart(idline, idcol, current_line, idcol + 1, len(current_line))
+    # Vertical
+    find_visible_trees_by_subpart(idline, idcol, current_col, 0, idline)
+    find_visible_trees_by_subpart(idline, idcol, current_col, idline + 1, len(current_col))
+
+
+def concat_col_val(id_col):
+    return list(v[id_col] for v in table)
+
+
+def add_edge_tree():
+    global visible_trees_dict
+    for idline, line in enumerate(table):
+        for idcol, col in enumerate(line):
+            if idline == 0 or idcol == 0 \
+                or idline == len(table)-1 or idcol == len(line)-1:
+                visible_trees_dict[(idline, idcol)] = table[idline][idcol]
+
 
 table = []
+visible_trees_dict = {}
 if __name__ == '__main__':
     with open("input", "r") as input_list:
         score1, score2 = 0, 0
@@ -31,13 +42,13 @@ if __name__ == '__main__':
             table.append(list(int(l) for l in line))
             pass
 
+        add_edge_tree()
         # On boucle en skipant le 1er et dernier arbre des lignes / col
         for idline, line in enumerate(table[:-1]):
             for idcol, col in enumerate(line[:-1]):
                 if idline == 0 or idcol == 0:
                     continue
-                score1 += find_visible_trees(idline, idcol)
-        score1 += calculate_edge_tree()
-
-        print(f"Part 1 : {score1}")  #
+                find_visible_trees(idline, idcol)
+        score1 = len(visible_trees_dict)
+        print(f"Part 1 : {score1}")  # 1538
         print(f"Part 2 : {score2}")  #
