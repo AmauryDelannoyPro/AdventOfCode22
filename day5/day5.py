@@ -66,4 +66,4 @@ if __name__ == '__main__':
                 score1 += stacks.pop()
 
         # print(f"Part 1 : {score1}")  #FWNSHLDNZ
-        print(f"Part 2 : {score1}")  #JQNZFPPPD
+        print(f"Part 2 : {score1}")  #RNRGDNFQG
