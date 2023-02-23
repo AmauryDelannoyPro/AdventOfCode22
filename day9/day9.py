@@ -10,10 +10,26 @@
 # def moveT
 #   isMoveNeeded ?
 #       update map
+def moveH(direction):
+
+    pass
+
+class World:
+    map = ["s"]
+
+    def add_col(self):
+        self.map.append("")
+
+    def display(self):
+        for line in self.map:
+            for col in line:
+                print(col)
+
 
 if __name__ == '__main__':
     with open("input", "r") as input_list:
         score1, score2 = 0, 0
+        world = World()
 
         # 1er déplacement, H bouge mais pas T
         # Après le 1er tour, T est a la position de H au tour précedant
@@ -26,8 +42,11 @@ if __name__ == '__main__':
         # option 2 : faire méthode add colonne (gauche ou droite) et pareil pour ligne
 
         for line in input_list.read().splitlines():
-            # Do your job here !
-            pass
+            direction, quantite = line.split(" ")
+            # print(direction, quantite)
+            for move in range(1, int(quantite)):
+                # print(direction)
+                moveH(direction)
 
         print(f"Part 1 : {score1}")  #
         print(f"Part 2 : {score2}")  #
